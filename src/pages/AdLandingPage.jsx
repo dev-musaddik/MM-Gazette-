@@ -6,6 +6,7 @@ import Spinner from '../components/common/Spinner';
 import { FiCheck, FiPhone, FiShoppingBag, FiTruck, FiShield, FiAward } from 'react-icons/fi';
 import GuestCheckoutForm from '../components/common/GuestCheckoutForm';
 import Navbar from '../components/common/Navbar';
+import SEO from '../components/common/SEO';
 
 /**
  * Ad Landing Page - Purple/Yellow Bangla Edition
@@ -83,6 +84,15 @@ const AdLandingPage = () => {
 
   return (
     <div className="min-h-screen bg-[#1a0b2e] font-sans text-white overflow-x-hidden">
+      <SEO 
+        title={landingPage.seoTitle || landingPage.headline}
+        description={landingPage.seoDescription || landingPage.description}
+        keywords={landingPage.keywords}
+        image={landingPage.images?.[0] || product.images?.[0]}
+        type="product"
+        publishedTime={landingPage.createdAt}
+        modifiedTime={landingPage.updatedAt}
+      />
       
       {/* HEADER */}
       <header className="bg-[#0f0518] py-4 px-4 sm:px-8 sticky top-0 z-50 border-b border-purple-900/30">

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { HelmetProvider } from 'react-helmet-async';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
@@ -103,178 +104,176 @@ const LanguageRouteWrapper = ({ children }) => {
 
 function App() {
   return (
-    <Router>
-      <LanguageProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-          toastClassName="!bg-gray-900 !text-primary-100 !border !border-primary-500/30 !rounded-xl !shadow-2xl !shadow-primary-500/10"
-          progressClassName="!bg-primary-500"
-        />
-        <RouteTracker />
-        <Routes>
-          {/* Root Redirect: / -> /en or /bn */}
-          <Route path="/" element={<RootRedirect />} />
+    <HelmetProvider>
+      <Router>
+        <LanguageProvider>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+            toastClassName="!bg-gray-900 !text-primary-100 !border !border-primary-500/30 !rounded-xl !shadow-2xl !shadow-primary-500/10"
+            progressClassName="!bg-primary-500"
+          />
+          <RouteTracker />
+          <Routes>
+            {/* Root Redirect: / -> /en or /bn */}
+            <Route path="/" element={<RootRedirect />} />
 
-          {/* Ad Landing Page - Public but not in navigation (outside lang structure for simplicity or keep it?) 
-              Keeping it outside for now as it might be shared directly. 
-              If needed inside, can be added to the :lang group.
-          */}
-          <Route path="/ad/:slug" element={<AdLandingPage />} />
-          <Route path="/track-order/:orderId" element={<GuestOrderTracking />} />
+            {/* Ad Landing Page - Public but not in navigation */}
+            <Route path="/ad/:slug" element={<AdLandingPage />} />
+            <Route path="/track-order/:orderId" element={<GuestOrderTracking />} />
 
 
-          {/* Localized Routes */}
-          <Route path="/:lang/*" element={
-            <LanguageRouteWrapper>
-              <Layout>
-                <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/products/:id" element={<ProductDetails />} />
-                  <Route path="/news" element={<News />} />
-                  <Route path="/news/:slug" element={<ArticleDetails />} />
-                  <Route path="/reviews" element={<Reviews />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/contact" element={<Contact />} />
+            {/* Localized Routes */}
+            <Route path="/:lang/*" element={
+              <LanguageRouteWrapper>
+                <Layout>
+                  <Routes>
+                    {/* Public Routes */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/products/:id" element={<ProductDetails />} />
+                    <Route path="/news" element={<News />} />
+                    <Route path="/news/:slug" element={<ArticleDetails />} />
+                    <Route path="/reviews" element={<Reviews />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    
+                    {/* Protected Routes */}
+                    <Route
+                      path="/cart"
+                      element={
+                        <ProtectedRoute>
+                          <Cart />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/checkout"
+                      element={
+                        <ProtectedRoute>
+                          <Checkout />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/profile"
+                      element={
+                        <ProtectedRoute>
+                          <Profile />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/orders"
+                      element={
+                        <ProtectedRoute>
+                          <OrderHistory />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/orders/track/:orderId"
+                      element={
+                        <ProtectedRoute>
+                          <OrderTracking />
+                        </ProtectedRoute>
+                      }
+                    />
+
+                    {/* Admin Routes */}
+                    <Route
+                      path="/admin/dashboard"
+                      element={
+                        <AdminRoute>
+                          <Dashboard />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/products"
+                      element={
+                        <AdminRoute>
+                          <ProductManagement />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/orders"
+                      element={
+                        <AdminRoute>
+                          <OrderManagement />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/users"
+                      element={
+                        <AdminRoute>
+                          <UserManagement />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/landing-pages"
+                      element={
+                        <AdminRoute>
+                          <LandingPageManagement />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/categories"
+                      element={
+                        <AdminRoute>
+                          <CategoryManagement />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/brands"
+                      element={
+                        <AdminRoute>
+                          <BrandManagement />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/analytics"
+                      element={
+                        <AdminRoute>
+                          <AnalyticsDashboard />
+                        </AdminRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/articles"
+                      element={
+                        <AdminRoute>
+                          <ArticleManagement />
+                        </AdminRoute>
+                      }
+                    />
                   
-                  {/* Protected Routes */}
-                  <Route
-                    path="/cart"
-                    element={
-                      <ProtectedRoute>
-                        <Cart />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/checkout"
-                    element={
-                      <ProtectedRoute>
-                        <Checkout />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/profile"
-                    element={
-                      <ProtectedRoute>
-                        <Profile />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/orders"
-                    element={
-                      <ProtectedRoute>
-                        <OrderHistory />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/orders/track/:orderId"
-                    element={
-                      <ProtectedRoute>
-                        <OrderTracking />
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  {/* Admin Routes */}
-                  <Route
-                    path="/admin/dashboard"
-                    element={
-                      <AdminRoute>
-                        <Dashboard />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/products"
-                    element={
-                      <AdminRoute>
-                        <ProductManagement />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/orders"
-                    element={
-                      <AdminRoute>
-                        <OrderManagement />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/users"
-                    element={
-                      <AdminRoute>
-                        <UserManagement />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/landing-pages"
-                    element={
-                      <AdminRoute>
-                        <LandingPageManagement />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/categories"
-                    element={
-                      <AdminRoute>
-                        <CategoryManagement />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/brands"
-                    element={
-                      <AdminRoute>
-                        <BrandManagement />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/analytics"
-                    element={
-                      <AdminRoute>
-                        <AnalyticsDashboard />
-                      </AdminRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin/articles"
-                    element={
-                      <AdminRoute>
-                        <ArticleManagement />
-                      </AdminRoute>
-                    }
-                  />
-                
-                  
-                  {/* 404 Not Found */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Layout>
-            </LanguageRouteWrapper>
-          } />
-        </Routes>
-      </LanguageProvider>
-    </Router>
+                    {/* 404 Not Found */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Layout>
+              </LanguageRouteWrapper>
+            } />
+          </Routes>
+        </LanguageProvider>
+      </Router>
+    </HelmetProvider>
   );
 }
 

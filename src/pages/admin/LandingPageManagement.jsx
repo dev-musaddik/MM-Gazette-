@@ -23,9 +23,13 @@ const LandingPageManagement = () => {
     headline: '',
     subheadline: '',
     description: '',
+    videoUrl: '',    // Assuming you might adding this later, or just placeholder
     features: ['', '', ''],
     benefits: ['', '', ''],
     images: [],
+    seoTitle: '',
+    seoDescription: '',
+    keywords: [],
     specialPrice: '',
     originalPrice: '',
     discount: '',
@@ -64,6 +68,9 @@ const LandingPageManagement = () => {
       features: page.features?.length ? page.features : ['', '', ''],
       benefits: page.benefits?.length ? page.benefits : ['', '', ''],
       images: page.images || [],
+      seoTitle: page.seoTitle || '',
+      seoDescription: page.seoDescription || '',
+      keywords: page.keywords || [],
       specialPrice: page.specialPrice || '',
       originalPrice: page.originalPrice || '',
       discount: page.discount || '',
@@ -309,6 +316,45 @@ const LandingPageManagement = () => {
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     placeholder="e.g., Summer Sale Main Campaign"
                     required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Section 1.5: SEO Configuration */}
+            <div className="bg-white/5 p-6 rounded-xl border border-white/10">
+              <h4 className="text-sm font-bold text-primary-500 uppercase tracking-wider mb-4 border-b border-white/10 pb-2">
+                SEO Configuration
+              </h4>
+              <div className="space-y-4">
+                <Input
+                  label="SEO Title (Meta Title)"
+                  value={formData.seoTitle}
+                  onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
+                  placeholder="Leave empty to use main Title"
+                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    SEO Description (Meta Description)
+                  </label>
+                  <textarea
+                    value={formData.seoDescription}
+                    onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
+                    rows="2"
+                    className="w-full px-4 py-2 bg-black border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white placeholder-gray-500"
+                    placeholder="Brief description for search engines"
+                  />
+                </div>
+                <div>
+                   <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Keywords (Comma separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={Array.isArray(formData.keywords) ? formData.keywords.join(', ') : formData.keywords}
+                    onChange={(e) => setFormData({ ...formData, keywords: e.target.value.split(',').map(k => k.trim()) })}
+                    className="w-full px-4 py-2 bg-black/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white transition-all placeholder-gray-600"
+                    placeholder="e.g. smart watch, best gadget, tech review"
                   />
                 </div>
               </div>

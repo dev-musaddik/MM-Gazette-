@@ -8,6 +8,7 @@ import Button from '../components/common/Button';
 import Spinner from '../components/common/Spinner';
 import { FiShoppingCart, FiCheck } from 'react-icons/fi';
 import useAnalytics from '../hooks/useAnalytics';
+import SEO from '../components/common/SEO';
 
 /**
  * ProductDetails Page
@@ -97,6 +98,13 @@ const ProductDetails = () => {
 
   return (
     <div className="min-h-screen bg-black py-20 text-white">
+      <SEO 
+        title={product.seoTitle || product.name}
+        description={product.seoDescription || product.description}
+        keywords={product.keywords}
+        image={product.images?.[0]}
+        type="product"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Image Gallery */}

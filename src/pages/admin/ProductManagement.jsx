@@ -31,6 +31,9 @@ const ProductManagement = () => {
     images: [],
     featured: false,
     specs: {},
+    seoTitle: '',
+    seoDescription: '',
+    keywords: [],
   });
   
   const [newSpecKey, setNewSpecKey] = useState('');
@@ -53,7 +56,11 @@ const ProductManagement = () => {
       stock: product.stock,
       images: product.images || [],
       featured: product.featured || false,
+      featured: product.featured || false,
       specs: product.specs || {},
+      seoTitle: product.seoTitle || '',
+      seoDescription: product.seoDescription || '',
+      keywords: product.keywords || [],
     });
     setIsModalOpen(true);
   };
@@ -78,6 +85,7 @@ const ProductManagement = () => {
       dispatch(createProduct(productData));
     }
 
+
     setIsModalOpen(false);
     resetForm();
   };
@@ -94,6 +102,9 @@ const ProductManagement = () => {
       images: [],
       featured: false,
       specs: {},
+      seoTitle: '',
+      seoDescription: '',
+      keywords: [],
     });
     setNewSpecKey('');
     setNewSpecValue('');
@@ -281,9 +292,43 @@ const ProductManagement = () => {
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 rows="3"
-                className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white placeholder-gray-500"
                 required
               />
+            </div>
+
+            {/* SEO Section */}
+            <div className="bg-white/5 p-4 rounded-lg border border-white/10 space-y-4">
+              <h4 className="text-sm font-bold text-gray-300 uppercase underline decoration-primary-500 underline-offset-4 mb-2">SEO Configuration</h4>
+              <Input
+                label="SEO Title"
+                value={formData.seoTitle}
+                onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
+                placeholder="Meta Title (Optional)"
+              />
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">
+                  SEO Description
+                </label>
+                <textarea
+                  value={formData.seoDescription}
+                  onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
+                  rows="2"
+                  className="w-full px-4 py-2 bg-black border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white placeholder-gray-500"
+                  placeholder="Meta Description (Optional)"
+                />
+              </div>
+               <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">
+                    Keywords (Comma separated)
+                  </label>
+                  <input
+                    type="text"
+                    value={Array.isArray(formData.keywords) ? formData.keywords.join(', ') : formData.keywords}
+                    onChange={(e) => setFormData({ ...formData, keywords: e.target.value.split(',').map(k => k.trim()) })}
+                    className="w-full px-4 py-2 bg-black border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-white placeholder-gray-600"
+                    placeholder="e.g. smartphone, android, best camera"
+                  />
+                </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
