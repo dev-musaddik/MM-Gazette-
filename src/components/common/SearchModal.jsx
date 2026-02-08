@@ -18,7 +18,7 @@ const SearchModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (query.trim().length < 2) {
+      if (query.trim()?.length < 2) {
         setSuggestions([]);
         return;
       }
@@ -83,7 +83,7 @@ const SearchModal = ({ isOpen, onClose }) => {
         </form>
 
         {/* Suggestions */}
-        {(suggestions.length > 0 || loading) && (
+        {(suggestions?.length > 0 || loading) && (
           <div className="p-4 bg-white/5">
             {loading ? (
               <div className="text-center py-4 text-gray-400">Searching...</div>
@@ -121,7 +121,7 @@ const SearchModal = ({ isOpen, onClose }) => {
           </div>
         )}
         
-        {!loading && query.length >= 2 && suggestions.length === 0 && (
+        {!loading && query?.length >= 2 && suggestions?.length === 0 && (
           <div className="p-8 text-center text-gray-400">
             No products found matching "{query}"
           </div>

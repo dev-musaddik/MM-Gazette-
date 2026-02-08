@@ -55,7 +55,7 @@ const Signup = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
+    if (formData.password?.length < 6) {
       toast.error(t('passwordTooShort'));
       return;
     }

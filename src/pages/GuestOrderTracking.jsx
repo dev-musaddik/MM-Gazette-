@@ -135,7 +135,7 @@ const GuestOrderTracking = () => {
                 <div
                   className="h-full bg-[#7c3aed] transition-all duration-500"
                   style={{
-                    width: `${(statusSteps.filter(s => s.completed).length - 1) * 33.33}%`,
+                    width: `${(statusSteps.filter(s => s.completed)?.length - 1) * 33.33}%`,
                   }}
                 ></div>
               </div>

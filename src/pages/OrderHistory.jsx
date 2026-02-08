@@ -69,7 +69,7 @@ const OrderHistory = () => {
           </div>
         )}
 
-        {orders.length === 0 ? (
+        {orders?.length === 0 ? (
           <div className="text-center py-20 bg-white/5 rounded-xl border border-white/10 border-dashed">
             <FiPackage className="w-20 h-20 mx-auto text-gray-600 mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">No Orders Yet</h2>

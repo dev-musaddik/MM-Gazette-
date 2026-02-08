@@ -36,7 +36,7 @@ const Reviews = () => {
           <div className="flex justify-center py-32">
             <Spinner size="lg" />
           </div>
-        ) : articles.length > 0 ? (
+        ) : articles?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {articles.map((article, index) => (
               <div 

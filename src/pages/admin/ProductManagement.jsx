@@ -355,7 +355,7 @@ const ProductManagement = () => {
                 multiple
                 onChange={async (e) => {
                   const files = Array.from(e.target.files);
-                  if (files.length === 0) return;
+                  if (files?.length === 0) return;
 
                   // Show uploading state
                   const uploadingImages = files.map(f => URL.createObjectURL(f));
@@ -400,7 +400,7 @@ const ProductManagement = () => {
               </p>
               
               {/* Display uploaded images */}
-              {formData.images && formData.images.length > 0 && (
+              {formData.images && formData.images?.length > 0 && (
                 <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {formData.images.map((url, index) => (
                     <div key={index} className="relative">

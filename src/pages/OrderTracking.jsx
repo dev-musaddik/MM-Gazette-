@@ -144,7 +144,7 @@ const OrderTracking = () => {
                 <div
                   className="h-full bg-primary-500 transition-all duration-500 shadow-neon-blue"
                   style={{
-                    width: `${(statusSteps.filter(s => s.completed).length - 1) * 33.33}%`,
+                    width: `${(statusSteps.filter(s => s.completed)?.length - 1) * 33.33}%`,
                   }}
                 ></div>
               </div>

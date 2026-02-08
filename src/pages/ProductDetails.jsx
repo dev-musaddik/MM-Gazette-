@@ -108,7 +108,7 @@ const ProductDetails = () => {
                 className="w-full h-96 object-contain p-8"
               />
             </div>
-            {product.images?.length > 1 && (
+            {product.images??.length > 1 && (
               <div className="grid grid-cols-4 gap-4">
                 {product.images.slice(1, 5).map((img, index) => (
                   <div key={index} className="bg-white/5 rounded-lg border border-white/10 overflow-hidden">
@@ -165,7 +165,7 @@ const ProductDetails = () => {
             </div>
 
             {/* Tech Specs */}
-            {product.specs && Object.keys(product.specs).length > 0 && (
+            {product.specs && Object.keys(product.specs)?.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-lg font-display font-bold text-white mb-4">Technical Specifications</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -235,7 +235,7 @@ const ProductDetails = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Reviews List */}
             <div className="space-y-6">
-              {product.reviews && product.reviews.length > 0 ? (
+              {product.reviews && product.reviews?.length > 0 ? (
                 product.reviews.map((review) => (
                   <div key={review._id} className="bg-white/5 border border-white/10 rounded-xl p-6 shadow-neon-blue">
                     <div className="flex items-center justify-between mb-4">

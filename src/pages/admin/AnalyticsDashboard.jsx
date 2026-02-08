@@ -76,7 +76,7 @@ const AnalyticsDashboard = () => {
       const { data } = await api.get('/api/landing-pages/admin/all');
       console.log('Fetched Landing Pages:', data);
       setLandingPages(data.landingPages);
-      if (data.landingPages.length > 0) {
+      if (data.landingPages?.length > 0) {
         setSelectedLandingPage(data.landingPages[0]._id);
       }
     } catch (error) {
@@ -245,7 +245,7 @@ const AnalyticsDashboard = () => {
                           <span className="font-mono font-medium text-primary-400">{count}</span>
                         </div>
                       ))}
-                      {Object.keys(landingData.sources).length === 0 && (
+                      {Object.keys(landingData.sources)?.length === 0 && (
                         <p className="text-gray-500 text-sm">No source data available yet.</p>
                       )}
                     </div>
@@ -294,7 +294,7 @@ const AnalyticsDashboard = () => {
                     </td>
                   </tr>
                 ))}
-                {trafficFlags.length === 0 && (
+                {trafficFlags?.length === 0 && (
                   <tr>
                     <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
                       No suspicious activity detected.

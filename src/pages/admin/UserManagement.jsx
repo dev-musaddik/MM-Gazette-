@@ -115,18 +115,18 @@ const UserManagement = () => {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-            <div className="text-2xl font-bold text-white">{users.length}</div>
+            <div className="text-2xl font-bold text-white">{users?.length}</div>
             <div className="text-sm text-gray-400">Total Users</div>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-xl p-4">
             <div className="text-2xl font-bold text-orange-400">
-              {users.filter(u => u.role === 'admin').length}
+              {users.filter(u => u.role === 'admin')?.length}
             </div>
             <div className="text-sm text-gray-400">Admins</div>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-xl p-4 col-span-2 sm:col-span-1">
             <div className="text-2xl font-bold text-primary-400">
-              {users.filter(u => u.role === 'user').length}
+              {users.filter(u => u.role === 'user')?.length}
             </div>
             <div className="text-sm text-gray-400">Regular Users</div>
           </div>
@@ -156,7 +156,7 @@ const UserManagement = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
-                {filteredUsers.length === 0 ? (
+                {filteredUsers?.length === 0 ? (
                   <tr>
                     <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
                       No users found
@@ -236,7 +236,7 @@ const UserManagement = () => {
         {/* Results Count */}
         {searchTerm && (
           <div className="mt-4 text-sm text-gray-500">
-            Showing {filteredUsers.length} of {users.length} users
+            Showing {filteredUsers?.length} of {users?.length} users
           </div>
         )}
       </div>

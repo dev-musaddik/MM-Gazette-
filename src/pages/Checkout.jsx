@@ -93,7 +93,7 @@ const Checkout = () => {
       trackEvent('PURCHASE', { 
         orderId: data.data._id, 
         total: grandTotal, 
-        itemCount: items.length 
+        itemCount: items?.length 
       });
 
       toast.success('Order placed successfully!');
@@ -106,7 +106,7 @@ const Checkout = () => {
     }
   };
 
-  if (items.length === 0) {
+  if (items?.length === 0) {
     navigate('/cart');
     return null;
   }

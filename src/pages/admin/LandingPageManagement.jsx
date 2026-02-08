@@ -61,8 +61,8 @@ const LandingPageManagement = () => {
       headline: page.headline,
       subheadline: page.subheadline || '',
       description: page.description,
-      features: page.features.length ? page.features : ['', '', ''],
-      benefits: page.benefits.length ? page.benefits : ['', '', ''],
+      features: page.features?.length ? page.features : ['', '', ''],
+      benefits: page.benefits?.length ? page.benefits : ['', '', ''],
       images: page.images || [],
       specialPrice: page.specialPrice || '',
       originalPrice: page.originalPrice || '',
@@ -242,7 +242,7 @@ const LandingPageManagement = () => {
               </div>
             </div>
           ))}
-          {landingPages.length === 0 && (
+          {landingPages?.length === 0 && (
             <div className="text-center py-16 bg-white/5 rounded-xl border-2 border-dashed border-white/10">
               <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FiPlus className="w-8 h-8 text-gray-500" />

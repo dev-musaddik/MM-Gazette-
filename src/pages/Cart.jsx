@@ -30,7 +30,7 @@ const Cart = () => {
   const handleCheckout = () => {
     trackEvent('CHECKOUT_INIT', { 
       total, 
-      itemCount: items.length 
+      itemCount: items?.length 
     });
     navigate('/checkout');
   };
@@ -60,7 +60,7 @@ const Cart = () => {
     );
   }
 
-  if (items.length === 0) {
+  if (items?.length === 0) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center py-24 px-4">
         <div className="text-center">
@@ -84,7 +84,7 @@ const Cart = () => {
         <div className="mb-8">
           <h1 className="text-4xl font-display font-bold text-white mb-2 text-glow">{t('shoppingCart')}</h1>
           <p className="text-gray-400">
-            {items.length} {items.length !== 1 ? t('items') : t('item')} {t('itemsInCart')}
+            {items?.length} {items?.length !== 1 ? t('items') : t('item')} {t('itemsInCart')}
           </p>
         </div>
 

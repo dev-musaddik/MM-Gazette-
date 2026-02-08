@@ -87,7 +87,7 @@ const ArticleDetails = () => {
           </div>
         </div>
 
-        {article.tags && article.tags.length > 0 && (
+        {article.tags && article.tags?.length > 0 && (
           <div className="border-t border-white/10 pt-8 mt-12">
             <div className="flex items-center flex-wrap gap-2">
               <FiTag className="text-primary-500 mr-2" />

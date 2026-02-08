@@ -41,8 +41,8 @@ const AdLandingPage = () => {
       setLandingPage(response.data.landingPage);
       
       const product = response.data.landingPage.product;
-      if (product.sizes?.length > 0) setSelectedSize(product.sizes[0]);
-      if (product.colors?.length > 0) setSelectedColor(product.colors[0]);
+      if (product.sizes??.length > 0) setSelectedSize(product.sizes[0]);
+      if (product.colors??.length > 0) setSelectedColor(product.colors[0]);
       
     } catch (error) {
       console.error('Failed to fetch landing page:', error);
@@ -50,6 +50,13 @@ const AdLandingPage = () => {
       setLoading(false);
     }
   };
+
+  // Track page visit once data is loaded
+  useEffect(() => {
+    if (landingPage?._id) {
+      trackEvent('VISIT');
+    }
+  }, [landingPage?._id, trackEvent]);
 
   if (loading) {
     return (
@@ -144,7 +151,7 @@ const AdLandingPage = () => {
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {landingPage.features && landingPage.features.length > 0 ? (
+            {landingPage.features && landingPage.features?.length > 0 ? (
               landingPage.features.map((feature, idx) => (
                 <div key={idx} className="bg-[#2e1065] text-white p-6 rounded-xl text-center shadow-lg hover:-translate-y-1 transition-transform duration-300 border border-purple-400/30">
                   <div className="w-12 h-12 mx-auto bg-white/10 rounded-full flex items-center justify-center mb-4 text-yellow-400">
@@ -215,7 +222,7 @@ const AdLandingPage = () => {
             {product.name}-এর কিছু ছবি
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {(landingPage.images?.length ? landingPage.images : product.images || []).slice(0, 4).map((img, idx) => (
+            {(landingPage.images??.length ? landingPage.images : product.images || []).slice(0, 4).map((img, idx) => (
               <div key={idx} className="rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-xl transition-shadow">
                 <img src={img} alt={`Gallery ${idx}`} className="w-full h-48 object-cover hover:scale-110 transition-transform duration-500" />
               </div>
@@ -257,7 +264,6 @@ const AdLandingPage = () => {
                 submitButtonClass="!bg-[#7c3aed] !hover:bg-[#6d28d9] !text-white !border-none"
                 onSuccess={async (order) => {
                    try {
-                     await api.post(`/api/landing-pages/${slug}/conversion`);
                      trackEvent('LEAD', { quantity, total: displayPrice * quantity });
                      
                      // Redirect to tracking page after 1.5s
