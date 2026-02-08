@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const API_URL = '/api/articles';
+import api from '../api/apiService';
 
 // Fetch all articles
 export const fetchArticles = createAsyncThunk(
@@ -9,10 +7,10 @@ export const fetchArticles = createAsyncThunk(
   async (filters = {}, thunkAPI) => {
     try {
       let query = '?';
-      if (filters.category) query += `category=${filters.category}&`;
-      if (filters.tag) query += `tag=${filters.tag}&`;
+      if (filters && filters.category) query += `category=${filters.category}&`;
+      if (filters && filters.tag) query += `tag=${filters.tag}&`;
       
-      const response = await axios.get(API_URL + query);
+      const response = await api.get('/api/articles' + query);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -29,7 +27,7 @@ export const fetchArticleBySlug = createAsyncThunk(
   'articles/fetchArticleBySlug',
   async (slug, thunkAPI) => {
     try {
-      const response = await axios.get(`${API_URL}/${slug}`);
+      const response = await api.get(`/api/articles/${slug}`);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
