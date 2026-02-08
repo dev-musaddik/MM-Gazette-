@@ -108,7 +108,7 @@ const ProductDetails = () => {
                 className="w-full h-96 object-contain p-8"
               />
             </div>
-            {product.images??.length > 1 && (
+            {product.images?..length > 1 && (
               <div className="grid grid-cols-4 gap-4">
                 {product.images.slice(1, 5).map((img, index) => (
                   <div key={index} className="bg-white/5 rounded-lg border border-white/10 overflow-hidden">

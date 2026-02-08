@@ -41,8 +41,8 @@ const AdLandingPage = () => {
       setLandingPage(response.data.landingPage);
       
       const product = response.data.landingPage.product;
-      if (product.sizes??.length > 0) setSelectedSize(product.sizes[0]);
-      if (product.colors??.length > 0) setSelectedColor(product.colors[0]);
+      if (product.sizes?..length > 0) setSelectedSize(product.sizes[0]);
+      if (product.colors?..length > 0) setSelectedColor(product.colors[0]);
       
     } catch (error) {
       console.error('Failed to fetch landing page:', error);
@@ -222,7 +222,7 @@ const AdLandingPage = () => {
             {product.name}-এর কিছু ছবি
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {(landingPage.images??.length ? landingPage.images : product.images || []).slice(0, 4).map((img, idx) => (
+            {(landingPage.images?..length ? landingPage.images : product.images || []).slice(0, 4).map((img, idx) => (
               <div key={idx} className="rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-xl transition-shadow">
                 <img src={img} alt={`Gallery ${idx}`} className="w-full h-48 object-cover hover:scale-110 transition-transform duration-500" />
               </div>
