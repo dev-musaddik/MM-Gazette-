@@ -1,83 +1,83 @@
 /** @type {import('tailwindcss').Config} */
-// Updated config to fix color naming conflict
 export default {
+  darkMode: ["class"],
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
-        // Tech/Dark Theme Palette
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: '#00F0FF', // Neon Cyan
-          50: '#E0FDFF',
-          100: '#B3FAFF',
-          200: '#80F6FF',
-          300: '#4DF2FF',
-          400: '#26EFFF',
-          500: '#00F0FF',
-          600: '#00C0CC',
-          700: '#009099',
-          800: '#006066',
-          900: '#003033',
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+          dark: '#020617', // Keep for legacy
         },
         secondary: {
-          DEFAULT: '#7000FF', // Neon Purple
-          50: '#F1E6FF',
-          100: '#DCC0FF',
-          200: '#C499FF',
-          300: '#AC73FF',
-          400: '#944DFF',
-          500: '#7000FF',
-          600: '#5A00CC',
-          700: '#430099',
-          800: '#2D0066',
-          900: '#160033',
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
-        background: {
-          DEFAULT: '#050505', // Almost Black
-          paper: '#111111',   // Dark Gray for cards
-          light: '#1A1A1A',   // Lighter Gray
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
-        text: {
-          main: '#FFFFFF',
-          muted: '#A3A3A3',
-          accent: '#00F0FF',
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          green: '#00FF94',
-          pink: '#FF0055',
-          yellow: '#FAFF00',
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+          hover: '#0284C7', // Keep for legacy
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        gold: {
+          DEFAULT: '#F59E0B',
+          dim: '#D97706',
         }
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        display: ['Orbitron', 'sans-serif'], // Tech/Futuristic font
-        body: ['Inter', 'sans-serif'],       // Clean readable font
-      },
-      boxShadow: {
-        'neon-blue': '0 0 10px rgba(0, 240, 255, 0.5), 0 0 20px rgba(0, 240, 255, 0.3)',
-        'neon-purple': '0 0 10px rgba(112, 0, 255, 0.5), 0 0 20px rgba(112, 0, 255, 0.3)',
-        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        sans: ['Inter', 'sans-serif'],
+        display: ['Outfit', 'sans-serif'],
       },
       animation: {
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
+        'fade-in': 'fadeIn 0.5s ease-out',
+        'slide-up': 'slideUp 0.5s ease-out',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
-        glow: {
-          'from': { boxShadow: '0 0 10px #00F0FF, 0 0 20px #00F0FF' },
-          'to': { boxShadow: '0 0 20px #00F0FF, 0 0 30px #00F0FF' },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         }
-      },
-      backgroundImage: {
-        'grid-pattern': "linear-gradient(to right, #1a1a1a 1px, transparent 1px), linear-gradient(to bottom, #1a1a1a 1px, transparent 1px)",
-      },
+      }
     },
   },
   plugins: [],

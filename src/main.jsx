@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import App from './App';
-import './index.css';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { HelmetProvider } from 'react-helmet-async';
+import App from './App.jsx'
+import './index.css'
+import './i18n';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider store={store}>
+    <HelmetProvider>
       <App />
-    </Provider>
-  </React.StrictMode>
-);
+    </HelmetProvider>
+  </React.StrictMode>,
+)

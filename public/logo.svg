@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Background Gradient -->
+<rect width="512" height="512" rx="128" fill="url(#brandGradient)"/>
+
+<!-- First M -->
+<path d="M100 360V140H130L170 240L210 140H240V360H210V190L170 280L130 190V360H100Z" fill="white"/>
+
+<!-- Second M -->
+<path d="M270 360V140H300L340 240L380 140H410V360H380V190L340 280L300 190V360H270Z" fill="white"/>
+
+<defs>
+<linearGradient id="brandGradient" x1="0" y1="512" x2="512" y2="0" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EC4899"/>
+<stop offset="0.5" stop-color="#8B5CF6"/>
+<stop offset="1" stop-color="#3B82F6"/>
+</linearGradient>
+</defs>
+</svg>

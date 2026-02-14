@@ -1,149 +1,126 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchCart } from '../redux/slices/cartSlice';
-import { useLanguage } from '../i18n/LanguageContext';
-import CartItem from '../components/cart/CartItem';
-import Button from '../components/common/Button';
-import Spinner from '../components/common/Spinner';
-import { FiShoppingCart, FiArrowRight } from 'react-icons/fi';
-import useAnalytics from '../hooks/useAnalytics';
+import { motion } from 'framer-motion';
+import { Trash2, ArrowRight, ShoppingBag, ChevronLeft } from 'lucide-react';
+import Seo from '../components/layout/Seo';
+import { useCart } from '../context/CartContext';
 
-/**
- * Cart Page
- * Shopping cart with items list and checkout
- */
 const Cart = () => {
-  const { t } = useLanguage();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { items, total, loading } = useSelector((state) => state.cart);
-  const { user } = useSelector((state) => state.auth);
-  const { trackEvent } = useAnalytics('public');
+    const { cart, removeFromCart, cartTotal, loading } = useCart();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user) {
-      dispatch(fetchCart());
-    }
-  }, [dispatch, user]);
+    if (loading) return <div className="pt-32 text-center text-white">Loading cart...</div>;
 
-  const handleCheckout = () => {
-    trackEvent('CHECKOUT_INIT', { 
-      total, 
-      itemCount: items?.length 
-    });
-    navigate('/checkout');
-  };
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center py-24 px-4">
-        <div className="text-center">
-          <FiShoppingCart className="w-20 h-20 mx-auto text-gray-600 mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">{t('pleaseSignIn')}</h2>
-          <p className="text-gray-400 mb-6">{t('needToBeLoggedIn')}</p>
-          <Link to="/login">
-            <Button variant="primary" size="lg">
-              {t('signIn')}
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
-
-  if (items?.length === 0) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center py-24 px-4">
-        <div className="text-center">
-          <FiShoppingCart className="w-20 h-20 mx-auto text-gray-600 mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">{t('yourCartIsEmpty')}</h2>
-          <p className="text-gray-400 mb-6">{t('addSomeProducts')}</p>
-          <Link to="/products">
-            <Button variant="primary" size="lg">
-              {t('browseProducts')}
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-black py-24 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-display font-bold text-white mb-2 text-glow">{t('shoppingCart')}</h1>
-          <p className="text-gray-400">
-            {items?.length} {items?.length !== 1 ? t('items') : t('item')} {t('itemsInCart')}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-4">
-            {items.map((item) => (
-              <CartItem key={item._id} item={item} />
-            ))}
-          </div>
-
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-6 sticky top-24 shadow-neon-blue">
-              <h2 className="text-2xl font-display font-bold text-white mb-6">{t('orderSummary')}</h2>
-
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-gray-400">
-                  <span>{t('subtotal')}</span>
-                  <span className="font-medium text-white">${total.toFixed(2)}</span>
+    if (cart.length === 0) {
+        return (
+            <div className="pt-32 pb-20 container-custom flex flex-col items-center justify-center min-h-[60vh] text-center">
+                <Seo title="Shopping Cart | MM Universal" />
+                <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6">
+                     <ShoppingBag className="w-10 h-10 text-slate-500" />
                 </div>
-                <div className="flex justify-between text-gray-400">
-                  <span>{t('shipping')}</span>
-                  <span className="font-medium text-white">{t('calculatedAtCheckout')}</span>
+                <h2 className="text-3xl font-display font-bold mb-4">Your Cart is Empty</h2>
+                <p className="text-slate-400 max-w-md mb-8">
+                    It looks like you haven't selected a service yet. Browse our portfolio or services to get started.
+                </p>
+                <div className="flex gap-4">
+                    <button onClick={() => navigate('/portfolio')} className="btn-primary px-8">
+                        Browse Portfolio
+                    </button>
                 </div>
-                <div className="flex justify-between text-gray-400">
-                  <span>{t('tax')}</span>
-                  <span className="font-medium text-white">{t('calculatedAtCheckout')}</span>
-                </div>
-                <div className="border-t border-white/10 pt-4">
-                  <div className="flex justify-between text-xl font-bold text-primary-500">
-                    <span>{t('total')}</span>
-                    <span>${total.toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-
-              <Button
-                variant="primary"
-                size="lg"
-                fullWidth
-                onClick={handleCheckout}
-                className="mb-4"
-              >
-                {t('proceedToCheckout')}
-                <FiArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-
-              <Link to="/products">
-                <Button variant="outline" size="md" fullWidth>
-                  {t('continueShopping')}
-                </Button>
-              </Link>
             </div>
-          </div>
+        );
+    }
+
+    return (
+        <div className="pt-32 pb-20 container-custom">
+            <Seo title="Shopping Cart | MM Universal" />
+            
+            <div className="flex items-center gap-4 mb-8">
+                <button onClick={() => navigate(-1)} className="p-2 rounded-lg hover:bg-white/5 transition-colors">
+                    <ChevronLeft className="w-6 h-6 text-slate-400" />
+                </button>
+                <h1 className="text-3xl font-display font-bold">Shopping Cart</h1>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Cart Items */}
+                <div className="lg:col-span-2 space-y-4">
+                    {cart.map((item, index) => {
+                        // Normalize data
+                        const img = item.image || (item.product && item.product.image) || (item.product && item.product.images && item.product.images[0]) || 'https://via.placeholder.com/150';
+                        const name = item.name || (item.product && item.product.name) || 'Product';
+                        const price = item.price || (item.product && item.product.basePrice) || 0;
+                        const productId = item.product._id || item.product; // Handle nested or flat ID
+
+                        return (
+                            <motion.div 
+                                key={index}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                className="glass-card p-4 flex gap-6 items-center group"
+                            >
+                                <div className="w-24 h-24 bg-white/5 rounded-xl overflow-hidden flex-shrink-0">
+                                    <img src={img} alt={name} className="w-full h-full object-cover" />
+                                </div>
+                                
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-xl mb-1 truncate">{name}</h3>
+                                    <p className="text-slate-400 text-sm mb-2">Category: {item.category || 'Digital Service'}</p>
+                                    <div className="font-bold text-accent text-lg">${price}</div>
+                                </div>
+
+                                <div className="flex flex-col items-end gap-4">
+                                    <button 
+                                        onClick={() => removeFromCart(productId)}
+                                        className="p-2 rounded-lg hover:bg-red-500/20 text-slate-400 hover:text-red-500 transition-colors"
+                                        title="Remove item"
+                                    >
+                                        <Trash2 className="w-5 h-5" />
+                                    </button>
+                                     <span className="text-sm font-medium bg-white/10 px-3 py-1 rounded-full">
+                                        Qty: {item.quantity}
+                                     </span>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </div>
+
+                {/* Summary */}
+                <div className="lg:col-span-1">
+                    <div className="glass-card p-6 sticky top-24">
+                        <h3 className="text-xl font-bold mb-6">Summary</h3>
+                        
+                        <div className="space-y-3 mb-6">
+                            <div className="flex justify-between text-slate-400">
+                                <span>Subtotal</span>
+                                <span>${cartTotal}</span>
+                            </div>
+                            <div className="flex justify-between text-slate-400">
+                                <span>Tax</span>
+                                <span>$0.00</span>
+                            </div>
+                            <div className="flex justify-between text-white font-bold text-xl pt-4 border-t border-white/10">
+                                <span>Total</span>
+                                <span className="text-accent">${cartTotal}</span>
+                            </div>
+                        </div>
+
+                        <button 
+                            onClick={() => navigate('/checkout')}
+                            className="btn-primary w-full py-4 text-lg font-bold shadow-xl shadow-accent/20 flex items-center justify-center gap-2"
+                        >
+                            Proceed to Checkout <ArrowRight className="w-5 h-5" />
+                        </button>
+                        
+                        <p className="text-center text-xs text-slate-500 mt-4">
+                            Secure Checkout - Instant Digital Delivery
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Cart;

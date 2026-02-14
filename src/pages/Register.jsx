@@ -1,34 +1,32 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Lock, Mail } from 'lucide-react';
+import { Lock, Mail, User } from 'lucide-react';
+import Seo from '../components/layout/Seo';
 
-const Login = () => {
+const Register = () => {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/auth/login', {
+            const res = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ name, email, password })
             });
             
             const data = await res.json();
             
             if (res.ok) {
-                // Determine if admin
+                // Auto login after register
                 localStorage.setItem('userInfo', JSON.stringify(data));
-                if (data.role === 'admin') {
-                    navigate('/admin/dashboard');
-                } else {
-                    navigate('/');
-                }
+                navigate('/');
             } else {
-                setError(data.message || 'Invalid email or password');
+                setError(data.message || 'Registration failed');
             }
         } catch (err) {
             setError('Server connection failed. Please try again.');
@@ -36,11 +34,13 @@ const Login = () => {
     };
 
     return (
-        <div className="pt-32 min-h-screen container-custom flex items-center justify-center">
+        <div className="pt-32 min-h-screen container-custom flex items-center justify-center pb-20">
+            <Seo title="Register | MM Universal" />
+            
             <div className="glass-card p-10 w-full max-w-md">
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl font-display font-bold">Admin Access</h2>
-                    <p className="text-slate-400 mt-2">Sign in to manage your website.</p>
+                    <h2 className="text-3xl font-display font-bold">Create Account</h2>
+                    <p className="text-slate-400 mt-2">Join MM Universal today.</p>
                 </div>
 
                 {error && (
@@ -49,7 +49,22 @@ const Login = () => {
                     </div>
                 )}
 
-                <form onSubmit={handleLogin} className="space-y-6">
+                <form onSubmit={handleRegister} className="space-y-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-slate-300">Full Name</label>
+                        <div className="relative">
+                            <User className="absolute left-3 top-3.5 w-5 h-5 text-slate-500" />
+                            <input 
+                                type="text" 
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-all" 
+                                placeholder="John Doe"
+                                required 
+                            />
+                        </div>
+                    </div>
+
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-slate-300">Email Address</label>
                         <div className="relative">
@@ -59,7 +74,8 @@ const Login = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-full bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-all" 
-                                placeholder="admin@example.com" 
+                                placeholder="john@example.com"
+                                required 
                             />
                         </div>
                     </div>
@@ -73,20 +89,21 @@ const Login = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-full bg-black/20 border border-white/10 rounded-lg pl-10 pr-4 py-3 text-white focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent transition-all" 
-                                placeholder="••••••••" 
+                                placeholder="••••••••"
+                                required 
                             />
                         </div>
                     </div>
 
                     <button type="submit" className="btn-primary w-full shadow-lg shadow-accent/20">
-                        Sign In
+                        Register
                     </button>
                 </form>
 
                 <div className="mt-6 text-center text-sm text-slate-400">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="text-accent hover:underline">
-                        Register
+                    Already have an account?{' '}
+                    <Link to="/login" className="text-accent hover:underline">
+                        Sign In
                     </Link>
                 </div>
             </div>
@@ -94,4 +111,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;

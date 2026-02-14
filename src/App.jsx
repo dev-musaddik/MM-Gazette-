@@ -1,279 +1,115 @@
-import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import { HelmetProvider } from 'react-helmet-async';
-import 'react-toastify/dist/ReactToastify.css';
-import Navbar from './components/common/Navbar';
-import Footer from './components/common/Footer';
-import ProtectedRoute from './utils/ProtectedRoute';
-import AdminRoute from './utils/AdminRoute';
-import { LanguageProvider } from './i18n/LanguageContext';
-
-// Pages
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Products from './pages/Products';
-import ProductDetails from './pages/ProductDetails';
-import Cart from './pages/Cart';
-import Checkout from './pages/Checkout';
-import Profile from './pages/Profile';
-import OrderHistory from './pages/OrderHistory';
-import OrderTracking from './pages/OrderTracking';
-import About from './pages/About';
+import Services from './pages/Services';
+import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
-import News from './pages/News';
-import ArticleDetails from './pages/ArticleDetails';
-import Reviews from './pages/Reviews';
+import WebSale from './pages/WebSale';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import AdminDashboard from './pages/AdminDashboard';
+import ProductList from './pages/admin/ProductList';
+import ProductForm from './pages/admin/ProductForm';
+import OrderList from './pages/admin/OrderList';
+import UserList from './pages/admin/UserList';
+import ContactList from './pages/admin/ContactList';
+import LandingPageList from './pages/admin/LandingPageList';
+import LandingPageLeads from './pages/admin/LandingPageLeads';
+import EditLandingPage from './pages/admin/EditLandingPage';
+import DynamicLandingPage from './pages/DynamicLandingPage';
+import AdminSettings from './pages/admin/AdminSettings';
+import ServiceSEO from './pages/ServiceSEO';
+import ServiceDesign from './pages/ServiceDesign';
+import ServiceCreative from './pages/ServiceCreative'; // New Import
+import ServiceAds from './pages/ServiceAds';
+import Checkout from './pages/Checkout';
+import Cart from './pages/Cart';
+import OrderSuccess from './pages/OrderSuccess';
+import BlogList from './pages/BlogList';
+import BlogDetail from './pages/BlogDetail';
+import AdminBlogList from './pages/admin/AdminBlogList';
+import AdminBlogEdit from './pages/admin/AdminBlogEdit';
 
-// Admin Pages
-import Dashboard from './pages/admin/Dashboard';
-import ProductManagement from './pages/admin/ProductManagement';
-import OrderManagement from './pages/admin/OrderManagement';
-import UserManagement from './pages/admin/UserManagement';
-import LandingPageManagement from './pages/admin/LandingPageManagement';
-import CategoryManagement from './pages/admin/CategoryManagement';
-import BrandManagement from './pages/admin/BrandManagement';
-import ArticleManagement from './pages/admin/ArticleManagement';
-import AnalyticsDashboard from './pages/admin/AnalyticsDashboard';
-import useAnalytics from './hooks/useAnalytics';
+import AdminOrderDetails from './pages/admin/AdminOrderDetails';
+import OrderTracking from './pages/OrderTracking';
 
-// Ad Landing Page (no navbar/footer)
-import AdLandingPage from './pages/AdLandingPage';
-import GuestOrderTracking from './pages/GuestOrderTracking';
-import NotFound from './pages/NotFound';
+import { CartProvider } from './context/CartContext';
+import { ThemeProvider } from './context/ThemeContext';
 
-// Root Redirect Component
-const RootRedirect = () => {
-  const savedLang = localStorage.getItem('language') || 'en';
-  return <Navigate to={`/${savedLang}`} replace />;
-};
-
-// Component to track page views
-const RouteTracker = () => {
-  const location = useLocation();
-  const { trackEvent } = useAnalytics('public');
-
-  useEffect(() => {
-    const lastPath = sessionStorage.getItem('last_view_path');
-    const lastTime = sessionStorage.getItem('last_view_time');
-    const now = Date.now();
-
-    // Prevent duplicate tracking on reload (debounce 2 seconds)
-    if (lastPath === location.pathname && lastTime && (now - parseInt(lastTime)) < 2000) {
-      return;
-    }
-
-    trackEvent('VIEW', { path: location.pathname });
-    
-    sessionStorage.setItem('last_view_path', location.pathname);
-    sessionStorage.setItem('last_view_time', now.toString());
-  }, [location, trackEvent]);
-
-  return null;
-};
-
-// Layout Component to wrap Navbar and Footer
-const Layout = ({ children }) => {
-  return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <Footer />
-    </div>
-  );
-};
-
-/**
- * Main App Component with URL-based Bilingual Support
- */
-// Language Route Wrapper to handle invalid language params
-const LanguageRouteWrapper = ({ children }) => {
-  const { lang } = useParams();
-  const savedLang = localStorage.getItem('language') || 'en';
-  const location = useLocation();
-
-  if (lang !== 'en' && lang !== 'bn') {
-    return <Navigate to={`/${savedLang}${location.pathname}`} replace />;
-  }
-
-  return children;
-};
+import { Toaster } from 'react-hot-toast';
+import GoogleIntegration from './components/common/GoogleIntegration';
 
 function App() {
   return (
-    <HelmetProvider>
-      <Router>
-        <LanguageProvider>
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-            toastClassName="!bg-gray-900 !text-primary-100 !border !border-primary-500/30 !rounded-xl !shadow-2xl !shadow-primary-500/10"
-            progressClassName="!bg-primary-500"
+    <Router>
+      <CartProvider>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <GoogleIntegration />
+          <div className="min-h-screen flex flex-col bg-background text-foreground selection:bg-accent selection:text-white transition-colors duration-300">
+          <Toaster 
+            position="top-center"
+            toastOptions={{
+              style: {
+                background: 'rgba(0, 0, 0, 0.8)',
+                color: '#fff',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '12px',
+                padding: '16px',
+              },
+              success: {
+                iconTheme: {
+                  primary: '#3b82f6', // Accent blue
+                  secondary: '#fff',
+                },
+              },
+            }}
           />
-          <RouteTracker />
-          <Routes>
-            {/* Root Redirect: / -> /en or /bn */}
-            <Route path="/" element={<RootRedirect />} />
-
-            {/* Ad Landing Page - Public but not in navigation */}
-            <Route path="/ad/:slug" element={<AdLandingPage />} />
-            <Route path="/track-order/:orderId" element={<GuestOrderTracking />} />
-
-
-            {/* Localized Routes */}
-            <Route path="/:lang/*" element={
-              <LanguageRouteWrapper>
-                <Layout>
-                  <Routes>
-                    {/* Public Routes */}
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:id" element={<ProductDetails />} />
-                    <Route path="/news" element={<News />} />
-                    <Route path="/news/:slug" element={<ArticleDetails />} />
-                    <Route path="/reviews" element={<Reviews />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    
-                    {/* Protected Routes */}
-                    <Route
-                      path="/cart"
-                      element={
-                        <ProtectedRoute>
-                          <Cart />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/checkout"
-                      element={
-                        <ProtectedRoute>
-                          <Checkout />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/profile"
-                      element={
-                        <ProtectedRoute>
-                          <Profile />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/orders"
-                      element={
-                        <ProtectedRoute>
-                          <OrderHistory />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/orders/track/:orderId"
-                      element={
-                        <ProtectedRoute>
-                          <OrderTracking />
-                        </ProtectedRoute>
-                      }
-                    />
-
-                    {/* Admin Routes */}
-                    <Route
-                      path="/admin/dashboard"
-                      element={
-                        <AdminRoute>
-                          <Dashboard />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/products"
-                      element={
-                        <AdminRoute>
-                          <ProductManagement />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/orders"
-                      element={
-                        <AdminRoute>
-                          <OrderManagement />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/users"
-                      element={
-                        <AdminRoute>
-                          <UserManagement />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/landing-pages"
-                      element={
-                        <AdminRoute>
-                          <LandingPageManagement />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/categories"
-                      element={
-                        <AdminRoute>
-                          <CategoryManagement />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/brands"
-                      element={
-                        <AdminRoute>
-                          <BrandManagement />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/analytics"
-                      element={
-                        <AdminRoute>
-                          <AnalyticsDashboard />
-                        </AdminRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/articles"
-                      element={
-                        <AdminRoute>
-                          <ArticleManagement />
-                        </AdminRoute>
-                      }
-                    />
-                  
-                    {/* 404 Not Found */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Layout>
-              </LanguageRouteWrapper>
-            } />
-          </Routes>
-        </LanguageProvider>
-      </Router>
-    </HelmetProvider>
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/services/seo" element={<ServiceSEO />} />
+              <Route path="/services/design" element={<ServiceDesign />} />
+              <Route path="/services/creative" element={<ServiceCreative />} /> {/* New Route */}
+              <Route path="/services/ads" element={<ServiceAds />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/web-sale" element={<WebSale />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/track-order" element={<OrderTracking />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/products" element={<ProductList />} />
+              <Route path="/admin/products/new" element={<ProductForm />} />
+              <Route path="/admin/products/:id/edit" element={<ProductForm />} />
+              <Route path="/admin/orders" element={<OrderList />} />
+              <Route path="/admin/orders/:id" element={<AdminOrderDetails />} />
+              <Route path="/admin/users" element={<UserList />} />
+              <Route path="/admin/messages" element={<ContactList />} />
+              <Route path="/admin/landing-pages" element={<LandingPageList />} />
+              <Route path="/admin/landing-pages/leads" element={<LandingPageLeads />} />
+              <Route path="/admin/landing-pages/new" element={<EditLandingPage />} />
+              <Route path="/admin/landing-pages/edit/:id" element={<EditLandingPage />} />
+              <Route path="/admin/blog" element={<AdminBlogList />} />
+              <Route path="/admin/blog/new" element={<AdminBlogEdit />} />
+              <Route path="/admin/blog/edit/:id" element={<AdminBlogEdit />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
+              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/:slug" element={<BlogDetail />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/order-success/:id" element={<OrderSuccess />} />
+              <Route path="/lp/:slug" element={<DynamicLandingPage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+        </ThemeProvider>
+      </CartProvider>
+    </Router>
   );
 }
 
